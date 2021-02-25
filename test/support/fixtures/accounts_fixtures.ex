@@ -12,7 +12,9 @@ defmodule Sage.AccountsFixtures do
       attrs
       |> Enum.into(%{
         email: unique_user_email(),
-        password: valid_user_password()
+        password: valid_user_password(),
+        first_name: "Dave",
+        last_name: "Simmons"
       })
       |> Sage.Accounts.register_user()
 

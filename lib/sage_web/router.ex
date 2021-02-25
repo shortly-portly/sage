@@ -74,5 +74,11 @@ defmodule SageWeb.Router do
     get "/users/confirm", UserConfirmationController, :new
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :confirm
+
+    live "/organisations", OrganisationLive.Index, :index
+    live "/organisations/:id/edit", OrganisationLive.Index, :edit
+
+    live "/organisations/:id", OrganisationLive.Show, :show
+    live "/organisations/:id/show/edit", OrganisationLive.Show, :edit
   end
 end

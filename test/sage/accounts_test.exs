@@ -85,7 +85,15 @@ defmodule Sage.AccountsTest do
 
     test "registers users with a hashed password" do
       email = unique_user_email()
-      {:ok, user} = Accounts.register_user(%{email: email, password: valid_user_password()})
+
+      {:ok, user} =
+        Accounts.register_user(%{
+          email: email,
+          password: valid_user_password(),
+          first_name: "Dave",
+          last_name: "Simmons"
+        })
+
       assert user.email == email
       assert is_binary(user.hashed_password)
       assert is_nil(user.confirmed_at)
@@ -96,7 +104,7 @@ defmodule Sage.AccountsTest do
   describe "change_user_registration/2" do
     test "returns a changeset" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{})
-      assert changeset.required == [:password, :email]
+      assert changeset.required == [:password, :email, :first_name, :last_name]
     end
 
     test "allows fields to be set" do
@@ -104,7 +112,12 @@ defmodule Sage.AccountsTest do
       password = valid_user_password()
 
       changeset =
-        Accounts.change_user_registration(%User{}, %{"email" => email, "password" => password})
+        Accounts.change_user_registration(%User{}, %{
+          "email" => email,
+          "password" => password,
+          "first_name" => "Dave",
+          "last_name" => "Simmons"
+        })
 
       assert changeset.valid?
       assert get_change(changeset, :email) == email

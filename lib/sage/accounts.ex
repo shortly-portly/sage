@@ -80,6 +80,23 @@ defmodule Sage.Accounts do
   end
 
   @doc """
+  Registers an organisation which consists of the organisation details and an initial user.
+
+  ## Examples
+
+      iex> register_organisation(%{field: value})
+      {:ok, %User{}}
+
+      iex> register_organisation(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+  """
+  def register_organisation(attrs) do
+    %User{}
+    |> User.organisation_registration_changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
   Returns an `%Ecto.Changeset{}` for tracking user changes.
 
   ## Examples
@@ -90,6 +107,19 @@ defmodule Sage.Accounts do
   """
   def change_user_registration(%User{} = user, attrs \\ %{}) do
     User.registration_changeset(user, attrs, hash_password: false)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking organisation changes.
+
+  ## Examples
+
+      iex> change_organisation_registration(user)
+      %Ecto.Changeset{data: %User{}}
+
+  """
+  def change_organisation_registration(%User{} = user, attrs \\ %{}) do
+    User.organisation_registration_changeset(user, attrs, hash_password: false)
   end
 
   ## Settings

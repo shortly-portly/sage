@@ -1,0 +1,22 @@
+<h1>Show Organisation</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, SageWeb.OrganisationLive.FormComponent,
+    id: @organisation.id,
+    title: @page_title,
+    action: @live_action,
+    organisation: @organisation,
+    return_to: Routes.organisation_show_path(@socket, :show, @organisation) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @organisation.name %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.organisation_show_path(@socket, :edit, @organisation), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.organisation_index_path(@socket, :index) %></span>

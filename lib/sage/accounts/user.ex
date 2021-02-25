@@ -8,6 +8,10 @@ defmodule Sage.Accounts.User do
     field :password, :string, virtual: true
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
+    field :first_name, :string
+    field :last_name, :string
+
+    belongs_to :organisation, Sage.Organisations.Organisation
 
     timestamps()
   end
@@ -31,9 +35,23 @@ defmodule Sage.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :first_name, :last_name])
+    |> validate_required([:first_name, :last_name])
     |> validate_email()
     |> validate_password(opts)
+  end
+
+  @doc """
+  A user changeset for registering an organisation.
+
+  """
+  def organisation_registration_changeset(user, attrs, opts \\ []) do
+    user
+    |> registration_changeset(attrs, opts)
+    |> cast_assoc(:organisation,
+      with: &Sage.Organisations.Organisation.changeset/2,
+      required: true
+    )
   end
 
   defp validate_email(changeset) do

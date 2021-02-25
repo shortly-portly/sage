@@ -1,4 +1,16 @@
-<h1>Register</h1>
+
+<div class="flex items-center justify-between">
+  <div class="">
+    <div class="header">Register</div>
+  </div>
+  <div>
+    <img
+      src="<%= Routes.static_path(@conn, "/images/kids.svg") %>"
+      alt="Add User"
+      class="w-40 h-40"
+    />
+  </div>
+</div>
 
 <%= form_for @changeset, Routes.user_registration_path(@conn, :create), fn f -> %>
   <%= if @changeset.action do %>
@@ -7,20 +19,45 @@
     </div>
   <% end %>
 
-  <%= label f, :email %>
-  <%= email_input f, :email, required: true %>
-  <%= error_tag f, :email %>
+  <%= inputs_for f, :organisation, fn o -> %>
+    <div class="mb-8">
+      <%= label o, :name, "Organisation Name", class: "label" %>
+      <%= text_input o, :name, class: "input" %>
+      <%= error_tag o, :name %>
+    </div>
+  <% end %>
 
-  <%= label f, :password %>
-  <%= password_input f, :password, required: true %>
-  <%= error_tag f, :password %>
-
-  <div>
-    <%= submit "Register" %>
+  <div class="mb-8">
+    <%= label f, :first_name, class: "label" %>
+    <%= text_input f, :first_name, required: true, class: "input" %>
+    <%= error_tag f, :first_name %>
   </div>
+
+  <div class="mb-8">
+    <%= label f, :last_name, class: "label" %>
+    <%= text_input f, :last_name, required: true, class: "input" %>
+    <%= error_tag f, :last_name %>
+  </div>
+
+  <div class="mb-8">
+    <%= label f, :email, class: "label" %>
+    <%= email_input f, :email, required: true, class: "input" %>
+    <%= error_tag f, :email %>
+  </div>
+
+  <div class="mb-8">
+    <%= label f, :password, class: "label" %>
+    <%= password_input f, :password, required: true, class: "input" %>
+    <%= error_tag f, :password %>
+  </div>
+
+  <div class="">
+    <%= submit "Register", class: "submit" %>
+  </div>
+
 <% end %>
 
-<p>
-  <%= link "Log in", to: Routes.user_session_path(@conn, :new) %> |
-  <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %>
+<p class="py-5">
+  <%= link "Log in", to: Routes.user_session_path(@conn, :new), class: "text-indigo-500 hover:text-indigo-700 focus:outline-none pt-2" %> |
+  <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new), class: "text-indigo-500 hover:text-indigo-700 focus:outline-none pt-2" %>
 </p>

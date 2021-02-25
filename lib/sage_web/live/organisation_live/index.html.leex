@@ -1,0 +1,48 @@
+
+<div class="flex items-center   justify-between py-5">
+  <div class="">
+    <h1 class="header">Listing Organisations</h1>
+  </div>
+  <div>
+    <img
+      src="<%= Routes.static_path(@socket, "/images/organisation.svg") %>"
+      alt="Add User"
+      class="w-40 h-40"
+    />
+  </div>
+</div>
+
+<%= if @live_action == :edit do %>
+  <%= live_modal @socket, SageWeb.OrganisationLive.FormComponent,
+    id: @organisation.id,
+    title: @page_title,
+    action: @live_action,
+    organisation: @organisation,
+    return_to: Routes.organisation_index_path(@socket, :index) %>
+<% end %>
+<div class="flex justify-center">
+  <table class="w-full">
+    <thead class="border-b-2 border-gray-400">
+      <tr>
+        <th class="p-3 uppercase font-semibold text-left">Name</th>
+
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="organisations">
+      <%= for organisation <- @organisations do %>
+        <tr id="organisation-<%= organisation.id %>" class="border-b-2 border-gray-300">
+          <td class="py-3 px-2"><%= organisation.name %></td>
+
+          <td class="px-2">
+            <span class="px-2 text-indigo-500 hover:text-indigo-700"><%= live_redirect "Show", to: Routes.organisation_show_path(@socket, :show, organisation) %></span>
+            <span class="text-gray-300">|</span>
+            <span class="px-2 text-indigo-500 hover:text-indigo-700"><%= live_patch "Edit", to: Routes.organisation_index_path(@socket, :edit, organisation) %></span>
+            <span class="text-gray-300">|</span>
+            <span class="px-2 text-indigo-500 hover:text-indigo-700"><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: organisation.id, data: [confirm: "Are you sure?"] %></span>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
