@@ -1,6 +1,17 @@
-<h1>Settings</h1>
+<div class="flex items-center justify-between">
+  <div>
+    <div class="header">Settings</div>
+  </div>
+  <div>
+    <img
+      src="<%= Routes.static_path(@conn, "/images/login.svg") %>"
+      alt="Add User"
+      class="w-40 h-40"
+    />
+  </div>
+</div>
 
-<h3>Change email</h3>
+<div class="font-semibold text-gray-800 text-3xl mb-8">Change email</div>
 
 <%= form_for @email_changeset, Routes.user_settings_path(@conn, :update), fn f -> %>
   <%= if @email_changeset.action do %>
@@ -11,20 +22,24 @@
 
   <%= hidden_input f, :action, name: "action", value: "update_email" %>
 
-  <%= label f, :email %>
-  <%= email_input f, :email, required: true %>
-  <%= error_tag f, :email %>
+  <div class="mb-8">
+    <%= label f, :email, class: "label" %>
+    <%= email_input f, :email, required: true, class: "input" %>
+    <%= error_tag f, :email %>
+  </div>
 
-  <%= label f, :current_password, for: "current_password_for_email" %>
-  <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_email" %>
-  <%= error_tag f, :current_password %>
+  <div class="mb-8">
+    <%= label f, :current_password, for: "current_password_for_email", class: "label" %>
+    <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_email", class: "input" %>
+    <%= error_tag f, :current_password %>
+  </div>
 
   <div>
-    <%= submit "Change email" %>
+    <%= submit "Change email", class: "submit" %>
   </div>
 <% end %>
 
-<h3>Change password</h3>
+<div class="font-semibold text-gray-800 text-3xl mb-8 mt-8">Change password</div>
 
 <%= form_for @password_changeset, Routes.user_settings_path(@conn, :update), fn f -> %>
   <%= if @password_changeset.action do %>
@@ -35,19 +50,25 @@
 
   <%= hidden_input f, :action, name: "action", value: "update_password" %>
 
-  <%= label f, :password, "New password" %>
-  <%= password_input f, :password, required: true %>
-  <%= error_tag f, :password %>
+  <div class="mb-8">
+    <%= label f, :password, "New password", class: "label" %>
+    <%= password_input f, :password, required: true, class: "input" %>
+    <%= error_tag f, :password %>
+  </div>
 
-  <%= label f, :password_confirmation, "Confirm new password" %>
-  <%= password_input f, :password_confirmation, required: true %>
-  <%= error_tag f, :password_confirmation %>
+  <div class="mb-8">
+    <%= label f, :password_confirmation, "Confirm new password", class: "label" %>
+    <%= password_input f, :password_confirmation, required: true, class: "input" %>
+    <%= error_tag f, :password_confirmation %>
+  </div>
 
-  <%= label f, :current_password, for: "current_password_for_password" %>
-  <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_password" %>
-  <%= error_tag f, :current_password %>
+  <div class="mb-8">
+    <%= label f, :current_password, for: "current_password_for_password", class: "label" %>
+    <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_password", class: "input" %>
+    <%= error_tag f, :current_password %>
+  </div>
 
   <div>
-    <%= submit "Change password" %>
+    <%= submit "Change password", class: "submit" %>
   </div>
 <% end %>
