@@ -40,7 +40,7 @@ defmodule SageWeb.Router do
 
     scope "/" do
       pipe_through :browser
-      live_dashboard "/dashboard", metrics: SageWeb.Telemetry
+      live_dashboard "/dashboard", metrics: SageWeb.Telemetry, ecto_repos: [Sage.Repo]
     end
   end
 
