@@ -5,7 +5,7 @@ defmodule Sage.Organisations.Organisation do
   schema "organisations" do
     field :name, :string
 
-    has_many :users, Sage.Accounts.User
+    has_many :users, Sage.Accounts.User, on_delete: :delete_all
 
     timestamps()
   end

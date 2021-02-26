@@ -4,7 +4,7 @@
   </div>
   <div>
     <img
-      src="<%= Routes.static_path(@conn, "/images/login.svg") %>"
+      src="<%= Routes.static_path(@conn, "/images/settings.svg") %>"
       alt="Add User"
       class="w-40 h-40"
     />
