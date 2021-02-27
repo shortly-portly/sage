@@ -19,14 +19,29 @@ import NProgress from "nprogress"
 import {LiveSocket} from "phoenix_live_view"
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
+
+let Hooks = {}
+Hooks.Select = {
+  mounted() {
+    console.log("Select Hook called")
+  },
+}
+
 let liveSocket = new LiveSocket("/live", Socket, {
   params: {_csrf_token: csrfToken},
+  
   dom: {
     onBeforeElUpdated(from, to){
       if (from.__x){ Alpine.clone(from.__x, to) }
     }
-  }
+  },
+  hooks: Hooks
 })
+
+let wibble = function() {
+  console.log("wibble called")
+  return {open: false}
+}
 
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", info => NProgress.start())
@@ -41,3 +56,4 @@ liveSocket.connect()
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
 
+window.wibble = wibble

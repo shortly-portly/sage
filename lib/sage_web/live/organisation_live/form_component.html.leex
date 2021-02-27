@@ -12,6 +12,12 @@
       <%= text_input f, :name, placeholder: "name of organisation", class: "input" %>
       <%= error_tag f, :name %>
     </div>
+  </div>
+
+  <div class="px-3 mb-8 mt-8 md:mb-0 flex-grid">
+    <%= label f, :country, class: "label" %>
+    <%= live_component @socket, SageWeb.OrganisationLive.CountriesComponent, id: :wibble %>
+  </div>
 
   <div class="flex justify-between py-5">
     <div class="">
@@ -25,9 +31,4 @@
       />
     </div>
   </div>
-
-
-  </div>
-
-
 </form>

@@ -6,11 +6,15 @@ defmodule SageWeb.OrganisationLive.FormComponent do
   @impl true
   def update(%{organisation: organisation} = assigns, socket) do
     changeset = Organisations.change_organisation(organisation)
+    # countries = Poison.encode!(%{fr: "France"}, %{en: "Eng"})
+    countries = %{fr: "France", en: "Eng"}
+    countries = Jason.encode!(countries)
 
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:changeset, changeset)}
+     |> assign(:changeset, changeset)
+     |> assign(:countries, countries)}
   end
 
   @impl true
@@ -23,7 +27,7 @@ defmodule SageWeb.OrganisationLive.FormComponent do
     {:noreply, assign(socket, :changeset, changeset)}
   end
 
-  def handle_event("save", %{"organisation" => organisation_params}, socket) do
+  def handle_event("save", %{"organisation" => organisation_params} = params, socket) do
     save_organisation(socket, socket.assigns.action, organisation_params)
   end
 
