@@ -27,7 +27,7 @@ defmodule SageWeb.OrganisationLive.FormComponent do
     {:noreply, assign(socket, :changeset, changeset)}
   end
 
-  def handle_event("save", %{"organisation" => organisation_params} = params, socket) do
+  def handle_event("save", %{"organisation" => organisation_params}, socket) do
     save_organisation(socket, socket.assigns.action, organisation_params)
   end
 

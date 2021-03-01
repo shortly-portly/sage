@@ -5,7 +5,7 @@
   </div>
   <div>
     <img
-      src="<%= Routes.static_path(@conn, "/images/kids.svg") %>"
+      src="<%= Routes.static_path(@conn, "/images/register.svg") %>"
       alt="Add User"
       class="w-40 h-40"
     />
@@ -20,44 +20,19 @@
   <% end %>
 
   <%= inputs_for f, :organisation, fn o -> %>
-    <div class="mb-8">
-      <%= label o, :name, "Organisation Name", class: "label" %>
-      <%= text_input o, :name, class: "input" %>
-      <%= error_tag o, :name %>
-    </div>
+    <%= input o, :name %>
   <% end %>
 
-  <div class="mb-8">
-    <%= label f, :first_name, class: "label" %>
-    <%= text_input f, :first_name, required: true, class: "input" %>
-    <%= error_tag f, :first_name %>
-  </div>
+  <%= input f, :first_name %>
+  <%= input f, :last_name %>
+  <%= input f, :email %>
+  <%= input f, :password %>
 
-  <div class="mb-8">
-    <%= label f, :last_name, class: "label" %>
-    <%= text_input f, :last_name, required: true, class: "input" %>
-    <%= error_tag f, :last_name %>
-  </div>
-
-  <div class="mb-8">
-    <%= label f, :email, class: "label" %>
-    <%= email_input f, :email, required: true, class: "input" %>
-    <%= error_tag f, :email %>
-  </div>
-
-  <div class="mb-8">
-    <%= label f, :password, class: "label" %>
-    <%= password_input f, :password, required: true, class: "input" %>
-    <%= error_tag f, :password %>
-  </div>
-
-  <div class="">
-    <%= submit "Register", class: "submit" %>
-  </div>
+  <%= my_submit "Register" %>
 
 <% end %>
 
-<p class="py-5">
+<p class="px-3 mb-8 mt-8 md:mb-0 flex-grid">
   <%= link "Log in", to: Routes.user_session_path(@conn, :new), class: "text-indigo-500 hover:text-indigo-700 focus:outline-none pt-2" %> |
   <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new), class: "text-indigo-500 hover:text-indigo-700 focus:outline-none pt-2" %>
 </p>

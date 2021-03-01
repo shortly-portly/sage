@@ -1,16 +1,4 @@
-
-<div class="flex items-center   justify-between py-5">
-  <div class="">
-    <h1 class="header">Listing Organisations</h1>
-  </div>
-  <div>
-    <img
-      src="<%= Routes.static_path(@socket, "/images/organisation.svg") %>"
-      alt="Add User"
-      class="w-40 h-40"
-    />
-  </div>
-</div>
+<%= header "Listing Organisations", "/images/organisation.svg" %>
 
 <%= if @live_action == :edit do %>
   <%= live_modal @socket, SageWeb.OrganisationLive.FormComponent,

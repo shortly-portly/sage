@@ -6,13 +6,7 @@
   phx_change: "validate",
   phx_submit: "save" %>
 
-  <div class="px-3 mb-8 md:mb-0 flex-grid">
-    <div>
-      <%= label f, :name, class: "label" %>
-      <%= text_input f, :name, placeholder: "name of organisation", class: "input" %>
-      <%= error_tag f, :name %>
-    </div>
-  </div>
+  <%= input f, :name %>
 
   <div class="px-3 mb-8 mt-8 md:mb-0 flex-grid">
     <%= label f, :country, class: "label" %>

@@ -21,6 +21,20 @@ defmodule Sage.AccountsFixtures do
     user
   end
 
+  def organisation_fixture(attrs \\ %{}) do
+    {:ok, user} =
+      attrs
+      |> Enum.into(%{
+        email: unique_user_email(),
+        password: valid_user_password(),
+        first_name: "Dave",
+        last_name: "Simmons"
+      })
+      |> Sage.Accounts.register_organisation()
+
+    user
+  end
+
   def extract_user_token(fun) do
     {:ok, captured} = fun.(&"[TOKEN]#{&1}[TOKEN]")
     [_, token, _] = String.split(captured.body, "[TOKEN]")

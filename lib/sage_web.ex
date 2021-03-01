@@ -89,6 +89,9 @@ defmodule SageWeb do
       import Phoenix.View
 
       import SageWeb.ErrorHelpers
+      import SageWeb.InputHelpers
+      import SageWeb.LiveHelpers
+      import SageWeb.FormatHelpers
       import SageWeb.Gettext
       alias SageWeb.Router.Helpers, as: Routes
     end
