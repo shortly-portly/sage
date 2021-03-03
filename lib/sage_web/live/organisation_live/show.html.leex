@@ -3,7 +3,7 @@
 <%= if @live_action in [:edit] do %>
   <%= live_modal @socket, SageWeb.OrganisationLive.FormComponent,
     id: @organisation.id,
-    title: @page_title,
+    page_title: @page_title,
     action: @live_action,
     organisation: @organisation,
     return_to: Routes.organisation_show_path(@socket, :show, @organisation) %>

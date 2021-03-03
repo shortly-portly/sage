@@ -8,7 +8,7 @@ defmodule SageWeb.CompanyLive.Index do
   def mount(_params, session, socket) do
     socket = assign_defaults(session, socket)
 
-    {:ok, assign(socket, :companies, list_companies())}
+    {:ok, assign(socket, :companies, list_companies(socket.assigns))}
   end
 
   @impl true
@@ -39,10 +39,10 @@ defmodule SageWeb.CompanyLive.Index do
     company = Companies.get_company!(id)
     {:ok, _} = Companies.delete_company(company)
 
-    {:noreply, assign(socket, :companies, list_companies())}
+    {:noreply, assign(socket, :companies, list_companies(socket.assigns))}
   end
 
-  defp list_companies do
-    Companies.list_companies()
+  defp list_companies(assigns) do
+    Companies.list_companies(assigns.current_user.organisation_id)
   end
 end

@@ -1,36 +1,51 @@
-<%= header "Listing Companies", "/images/company.svg" %>
 
 <%= if @live_action in [:new, :edit] do %>
-  <%= live_modal @socket, SageWeb.CompanyLive.FormComponent,
+
+  <%= live_component @socket, SageWeb.CompanyLive.FormComponent,
     id: @company.id || :new,
-    title: @page_title,
+    page_title: @page_title,
     action: @live_action,
     company: @company,
     current_user: @current_user,
     return_to: Routes.company_index_path(@socket, :index) %>
 <% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
+<%= if @live_action == :index do %>
 
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="companies">
-    <%= for company <- @companies do %>
-      <tr id="company-<%= company.id %>">
-        <td><%= company.name %></td>
+  <%= header "Companies", "/images/company.svg" %>
 
-        <td>
-          <span><%= live_redirect "Show", to: Routes.company_show_path(@socket, :show, company) %></span>
-          <span><%= live_patch "Edit", to: Routes.company_index_path(@socket, :edit, company) %></span>
-          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: company.id, data: [confirm: "Are you sure?"] %></span>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+  <div class="flex justify-center">
+    <table class="w-full">
+      <thead class="border-b-2 border-gray-400">
+        <tr>
+          <th class="p-3 uppercase font-semibold text-left">Name</th>
 
-<span><%= live_patch "New Company", to: Routes.company_index_path(@socket, :new) %></span>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="companies">
+        <%= for company <- @companies do %>
+          <tr id="company-<%= company.id %>" class="border-b-2 border-gray-300">
+            <td class="py-3 px-2"><%= company.name %></td>
+
+            <td class="px-2">
+              <span class="px-2 text-indigo-500 hover:text-indigo-700"><%= live_redirect "Show", to: Routes.company_show_path(@socket, :show, company) %></span>
+              <span class="text-gray-300">|</span>
+              <span class="px-2 text-indigo-500 hover:text-indigo-700"><%= live_patch "Edit", to: Routes.company_index_path(@socket, :edit, company) %></span>
+              <span class="text-gray-300">|</span>
+              <span class="px-2 text-indigo-500 hover:text-indigo-700"><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: company.id, data: [confirm: "Are you sure?"] %></span>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+</div>
+
+    <div class="my-8">
+      <%= live_patch "New Company",
+          to: Routes.company_index_path(@socket, :new),
+          class: "text-indigo-500 hover:text-indigo-700 focus:outline-none pt-2 text-2xl font-semibold border-indigo-500 border-2 p-2 rounded-md"
+      %>
+    </div>
+
+<% end %>

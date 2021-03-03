@@ -20,7 +20,7 @@
   <% end %>
 
   <%= inputs_for f, :organisation, fn o -> %>
-    <%= input o, :name %>
+    <%= input o, :name, label_text: "Organisation Name" %>
   <% end %>
 
   <%= input f, :first_name %>

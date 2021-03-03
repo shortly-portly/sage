@@ -33,7 +33,7 @@ defmodule SageWeb.OrganisationLiveTest do
       {:ok, index_live, _html} = live(conn, Routes.organisation_index_path(conn, :index))
 
       assert index_live |> element("#organisation-#{organisation.id} a", "Edit") |> render_click() =~
-               "Edit Organisation"
+               "Edit #{organisation.name}"
 
       assert_patch(index_live, Routes.organisation_index_path(conn, :edit, organisation))
 

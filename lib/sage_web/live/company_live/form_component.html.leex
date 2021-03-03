@@ -1,4 +1,4 @@
-<h2><%= @title %></h2>
+  <%= header @page_title, "/images/company.svg" %>
 
 <%= f = form_for @changeset, "#",
   id: "company-form",
@@ -6,16 +6,28 @@
   phx_change: "validate",
   phx_submit: "save" %>
 
-  <%= input f, :name %>
-  <%= input f, :address_line_1 %>
-  <%= input f, :address_line_2 %>
-  <%= input f, :county %>
-  <%= input f,  :postcode %>
-  <%= input f, :country %>
-  <%= input f, :telephone %>
-  <%= input f, :email %>
-  <%= input f, :website %>
+  <div class="border-2 mb-4 pb-8 px-8 py-8">
+    <div class="font-semibold text-indigo-500 text-2xl ">Company Details</div>
+
+    <%= input f, :name %>
+    <%= input f, :address_line_1 %>
+    <%= input f, :address_line_2 %>
+    <%= input f, :county %>
+    <%= input f,  :postcode %>
+    <%= input f, :country %>
+  </div>
+
+  <div class="border-2 pb-8 px-8 py-8">
+    <div class="font-semibold text-indigo-500 text-2xl">Contact Details</div>
+    <%= input f, :telephone %>
+    <%= input f, :email %>
+    <%= input f, :website %>
+  </div>
 
   <%= my_submit "Save", phx_disable_with: "Saving..." %>
+  <p class="px-3 mb-8 mt-8 md:mb-0 flex-grid">
+    <%= live_patch "Cancel", to: Routes.company_index_path(@socket, :index), class: "text-base text-indigo-500 hover:text-indigo-700 focus:outline-none pt-2 p-2" %>
+  </p>
+
 
 </form>

@@ -11,11 +11,18 @@ defmodule SageWeb.InputHelpers do
     input_opts = [class: "input"]
 
     content_tag :div, wrapper_opts do
+      label_text =
+        if opts[:label_text] do
+          opts[:label_text]
+        else
+          field
+        end
+
       label =
         if opts[:label] == false do
           " "
         else
-          label(form, field, humanize(field), label_opts)
+          label(form, field, humanize(label_text), label_opts)
         end
 
       input = apply(Phoenix.HTML.Form, type, [form, field, input_opts])
