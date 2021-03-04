@@ -1,0 +1,28 @@
+<%= header "Open Companies", "/images/company.svg" %>
+
+  <div class="flex justify-center">
+    <table class="w-full">
+      <thead class="border-b-2 border-gray-400">
+        <tr>
+          <th class="p-3 uppercase font-semibold text-left">Name</th>
+
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="companies">
+        <tr class="border-b-2">
+          <td><input phx-keyup="filter" class="w-full border-gray-300 border-2 rounded-md px-2" type="text"/></td>
+          <td></td>
+        </tr>
+        <%= for company <- @filtered do %>
+          <tr id="company-<%= company.id %>" class="border-b-2 border-gray-300">
+            <td class="py-3 px-2"><%= company.name %></td>
+
+            <td class="px-2">
+              <span class="px-2 text-indigo-500 hover:text-indigo-700"><%= live_patch "Open", to: Routes.company_open_company_path(@socket, :open, company) %></span>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+</div>

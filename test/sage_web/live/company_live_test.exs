@@ -9,19 +9,14 @@ defmodule SageWeb.CompanyLiveTest do
   @update_attrs %{name: "some updated name"}
   @invalid_attrs %{name: nil}
 
-  defp create_company(_) do
-    organisation = fixture(:organisation)
-    company = fixture(:company, %{organisation_id: organisation.id})
-    %{organisation: organisation, company: company}
-  end
-
   describe "Index" do
-    setup [:create_company]
-
     setup %{conn: conn} do
-      conn = log_in_user(conn, organisation_fixture(%{organisation: %{name: "Organisation"}}))
+      user = organisation_fixture(%{organisation: %{name: "Organisation"}})
+      company = fixture(:company, %{organisation_id: user.organisation.id})
 
-      %{conn: conn}
+      conn = log_in_user(conn, user)
+
+      %{conn: conn, organisation: user.organisation, company: company}
     end
 
     test "lists all companies", %{conn: conn, company: company} do
@@ -84,11 +79,13 @@ defmodule SageWeb.CompanyLiveTest do
   end
 
   describe "Show" do
-    setup [:create_company]
-
     setup %{conn: conn} do
-      conn = log_in_user(conn, user_fixture())
-      %{conn: conn}
+      user = organisation_fixture(%{organisation: %{name: "Organisation"}})
+      company = fixture(:company, %{organisation_id: user.organisation.id})
+
+      conn = log_in_user(conn, user)
+
+      %{conn: conn, organisation: user.organisation, company: company}
     end
 
     test "displays company", %{conn: conn, company: company} do

@@ -4,11 +4,19 @@ defmodule SageWeb.Endpoint do
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
+
   @session_options [
-    store: :cookie,
+    store: PhoenixLiveSession,
+    pub_sub: Sage.PubSub,
     key: "_sage_key",
     signing_salt: "2Ytbl+mr"
   ]
+
+  # @session_options [
+  #  store: :cookie,
+  #  key: "_sage_key",
+  #  signing_salt: "2Ytbl+mr"
+  # ]
 
   socket "/socket", SageWeb.UserSocket,
     websocket: true,

@@ -5,7 +5,7 @@ defmodule SageWeb.OrganisationLive.Index do
   alias Sage.Organisations.Organisation
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(_params, session, socket) do
     {:ok, assign(socket, :organisations, list_organisations())}
   end
 

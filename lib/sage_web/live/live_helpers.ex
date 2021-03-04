@@ -25,7 +25,7 @@ defmodule SageWeb.LiveHelpers do
     live_component(socket, SageWeb.ModalComponent, modal_opts)
   end
 
-  def assign_defaults(%{"user_token" => user_token}, socket) do
+  def assign_defaults(socket, %{"user_token" => user_token}) do
     socket =
       assign_new(socket, :current_user, fn -> Accounts.get_user_by_session_token(user_token) end)
 
