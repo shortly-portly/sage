@@ -17,7 +17,9 @@ defmodule Sage.Repo.Migrations.CreateCompanies do
       add :vat_country_code, :string
       add :next_vat_return_date, :date
       add :eori_number, :string
-      add :financial_year_start, :date
+      add :financial_year_start, :integer
+      add :financial_month_start, :integer
+
 
       add :organisation_id, references(:organisations)
 

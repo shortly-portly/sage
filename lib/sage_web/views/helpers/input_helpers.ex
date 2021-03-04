@@ -31,6 +31,35 @@ defmodule SageWeb.InputHelpers do
     end
   end
 
+  def date(form, field, opts \\ []) do
+    type = :text_input
+
+    wrapper_opts = [class: "px-3 mb-4 mt-4 md:mb-0 flex-grid"]
+    label_opts = [class: "label"]
+    #    input_opts = [class: "input #{state_class(form, field)}"]
+    input_opts = [class: "input", phx_hook: "Wobble"]
+
+    content_tag :div, wrapper_opts do
+      label_text =
+        if opts[:label_text] do
+          opts[:label_text]
+        else
+          field
+        end
+
+      label =
+        if opts[:label] == false do
+          " "
+        else
+          label(form, field, humanize(label_text), label_opts)
+        end
+
+      input = apply(Phoenix.HTML.Form, type, [form, field, input_opts])
+      error = SageWeb.ErrorHelpers.error_tag(form, field)
+      [label, input, error || ""]
+    end
+  end
+
   def my_submit(label, opts \\ []) do
     wrapper_opts = [class: "px-3 mb-8 mt-8 md:mb-0 flex-grid"]
 

@@ -3,6 +3,21 @@ defmodule SageWeb.CompanyLive.FormComponent do
 
   alias Sage.Companies
 
+  @months [
+    Jan: 1,
+    Feb: 2,
+    Mar: 3,
+    Apr: 4,
+    May: 5,
+    Jun: 6,
+    Jul: 7,
+    Aug: 8,
+    Sep: 9,
+    Oct: 10,
+    Nov: 11,
+    Dec: 12
+  ]
+
   @impl true
   def update(%{company: company} = assigns, socket) do
     changeset = Companies.change_company(company)
@@ -10,7 +25,8 @@ defmodule SageWeb.CompanyLive.FormComponent do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:changeset, changeset)}
+     |> assign(:changeset, changeset)
+     |> assign(:months, @months)}
   end
 
   @impl true

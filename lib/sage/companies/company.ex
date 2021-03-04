@@ -17,7 +17,8 @@ defmodule Sage.Companies.Company do
     field :vat_country_code, :string
     field :next_vat_return_date, :date
     field :eori_number, :string
-    field :financial_year_start, :date
+    field :financial_year_start, :integer
+    field :financial_month_start, :integer
 
     belongs_to :organisation, Sage.Organisations.Organisation
 

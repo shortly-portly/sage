@@ -19,7 +19,7 @@
         <%= input f, :country %>
       </div>
 
-      <div class="border-2 pb-8 px-8 py-8">
+      <div class="border-2 mr-2 pb-8 px-8 py-8">
         <div class="font-semibold text-indigo-500 text-2xl">Contact Details</div>
         <%= input f, :telephone %>
         <%= input f, :email %>
@@ -30,19 +30,27 @@
       <p class="px-3 mb-8 mt-8 md:mb-0 flex-grid">
         <%= live_patch "Cancel", to: Routes.company_index_path(@socket, :index), class: "text-base text-indigo-500 hover:text-indigo-700 focus:outline-none pt-2 p-2" %>
       </p>
-  </div>
-  <div class="w-1/2">
-    <div class="border-2 mb-2 pb-8 px-8 py-8">
-      <div class="font-semibold text-indigo-500 text-2xl ">VAT Details</div>
+    </div>
+    <div class="w-1/2">
+      <div class="border-2 mb-2 pb-8 px-8 py-8">
+        <div class="font-semibold text-indigo-500 text-2xl ">VAT Details</div>
 
 
-      <%= input f, :vat_registration_number %>
-      <%= input f, :vat_country_code %>
-      <%= input f, :next_vat_return_date %>
-      <%= input f, :eori_number %>
-      <%= input f, :financial_year_start %>
+        <%= input f, :vat_registration_number %>
+        <%= input f, :vat_country_code %>
+        <%= date f, :next_vat_return_date %>
+        <%= input f, :eori_number %>
 
+      <div class="px-3 mb-4 mt-4 md:mb-0 flex-grid">
+          <%= label f, :financial_month_start, class: "label" %>
+          <%= select f, :financial_month_start, @months, class: "input" %>
+        </div>
+
+        <div class="px-3 mb-4 mt-4 md:mb-0 flex-grid">
+          <%= label f, :financial_year_start, class: "label" %>
+          <%= select f, :financial_year_start, 2015..2025, class: "input" %>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 </form>

@@ -17,13 +17,18 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import NProgress from "nprogress"
 import {LiveSocket} from "phoenix_live_view"
+import flatpickr from "flatpickr"
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 
 let Hooks = {}
-Hooks.Select = {
+Hooks.Wobble = {
   mounted() {
     console.log("Select Hook called")
+    console.log(this.el)
+    flatpickr(this.el, {
+      /* dateFormat: 'd-m-Y' */
+    })
   },
 }
 
@@ -37,11 +42,6 @@ let liveSocket = new LiveSocket("/live", Socket, {
   },
   hooks: Hooks
 })
-
-let wibble = function() {
-  console.log("wibble called")
-  return {open: false}
-}
 
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", info => NProgress.start())
@@ -57,3 +57,4 @@ liveSocket.connect()
 window.liveSocket = liveSocket
 
 window.wibble = wibble
+
