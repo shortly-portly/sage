@@ -13,6 +13,12 @@ defmodule Sage.Repo.Migrations.CreateCompanies do
       add :email, :string
       add :website, :string
 
+      add :vat_registration_number, :string
+      add :vat_country_code, :string
+      add :next_vat_return_date, :date
+      add :eori_number, :string
+      add :financial_year_start, :date
+
       add :organisation_id, references(:organisations)
 
       timestamps()

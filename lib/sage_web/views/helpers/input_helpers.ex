@@ -5,7 +5,7 @@ defmodule SageWeb.InputHelpers do
     # Return the input type for the given field
     type = Phoenix.HTML.Form.input_type(form, field)
 
-    wrapper_opts = [class: "px-3 mb-8 mt-8 md:mb-0 flex-grid"]
+    wrapper_opts = [class: "px-3 mb-4 mt-4 md:mb-0 flex-grid"]
     label_opts = [class: "label"]
     #    input_opts = [class: "input #{state_class(form, field)}"]
     input_opts = [class: "input"]
