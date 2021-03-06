@@ -1,0 +1,35 @@
+<h1>Listing Accounting periods</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, SageWeb.AccountingPeriodLive.FormComponent,
+    id: @accounting_period.id || :new,
+    title: @page_title,
+    action: @live_action,
+    accounting_period: @accounting_period,
+    return_to: Routes.accounting_period_index_path(@socket, :index) %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Period no</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="accounting_periods">
+    <%= for accounting_period <- @accounting_periods do %>
+      <tr id="accounting_period-<%= accounting_period.id %>">
+        <td><%= accounting_period.period_no %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.accounting_period_show_path(@socket, :show, accounting_period) %></span>
+          <span><%= live_patch "Edit", to: Routes.accounting_period_index_path(@socket, :edit, accounting_period) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: accounting_period.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Accounting period", to: Routes.accounting_period_index_path(@socket, :new) %></span>

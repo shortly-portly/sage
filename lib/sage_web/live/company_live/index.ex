@@ -3,6 +3,7 @@ defmodule SageWeb.CompanyLive.Index do
 
   alias Sage.Companies
   alias Sage.Companies.Company
+  alias Sage.AccountingPeriods.AccountingPeriod
 
   @impl true
   def mount(_params, session, socket) do
@@ -25,7 +26,7 @@ defmodule SageWeb.CompanyLive.Index do
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Company")
-    |> assign(:company, %Company{})
+    |> assign(:company, Companies.company_defaults())
   end
 
   defp apply_action(socket, :index, _params) do
@@ -45,4 +46,13 @@ defmodule SageWeb.CompanyLive.Index do
   defp list_companies(assigns) do
     Companies.list_companies(assigns.current_user.organisation_id)
   end
+
+  # defp company_defaults do
+  #   today = Date.utc_today()
+
+  #   %Company{}
+  #   |> Map.put(:financial_month_start, today.month)
+  #   |> Map.put(:financial_year_start, today.year)
+  #   |> Map.put(:accounting_periods, [%AccountingPeriod{}])
+  # end
 end

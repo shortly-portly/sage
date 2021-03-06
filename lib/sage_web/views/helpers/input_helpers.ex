@@ -34,10 +34,10 @@ defmodule SageWeb.InputHelpers do
   def date(form, field, opts \\ []) do
     type = :text_input
 
-    wrapper_opts = [class: "px-3 mb-4 mt-4 md:mb-0 flex-grid"]
+    wrapper_opts = [class: "px-3 mt-2 mb-2  flex-grid"]
     label_opts = [class: "label"]
     #    input_opts = [class: "input #{state_class(form, field)}"]
-    input_opts = [class: "input", phx_hook: "Wobble"]
+    input_opts = [class: "input", phx_hook: "Wobble", readonly: true]
 
     content_tag :div, wrapper_opts do
       label_text =
@@ -67,50 +67,6 @@ defmodule SageWeb.InputHelpers do
 
     content_tag :div, wrapper_opts do
       Phoenix.HTML.Form.submit(label, opts)
-    end
-  end
-
-  def datepicker(form, field) do
-    wrapper_opts = [class: "form-group"]
-    label_opts = [class: "control-label"]
-    input_opts = [class: "form-control datepicker"]
-
-    content_tag :div, class: "row" do
-      content_tag :div, class: "col-sm-6" do
-        content_tag :div, wrapper_opts do
-          label = label(form, field, humanize(field), label_opts)
-          input = text_input(form, field, input_opts)
-
-          error = SageWeb.ErrorHelpers.error_tag(form, field)
-
-          [label, input, error || ""]
-        end
-      end
-    end
-  end
-
-  def timepicker(form, field, opts \\ []) do
-    wrapper_opts = [class: "form-group"]
-    label_opts = [class: "control-label"]
-    input_opts = [class: "form-control timepicker"]
-
-    content_tag :div, class: "row" do
-      content_tag :div, class: "col-sm-10" do
-        content_tag :div, wrapper_opts do
-          label_text =
-            if opts[:label] == false do
-              " "
-            else
-              label(form, field, humanize(field), label_opts)
-            end
-
-          input = text_input(form, field, input_opts)
-
-          error = SageWeb.ErrorHelpers.error_tag(form, field)
-
-          [label_text, input, error || ""]
-        end
-      end
     end
   end
 

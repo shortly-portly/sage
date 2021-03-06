@@ -1,0 +1,17 @@
+<h2><%= @title %></h2>
+
+<%= f = form_for @changeset, "#",
+  id: "accounting_period-form",
+  phx_target: @myself,
+  phx_change: "validate",
+  phx_submit: "save" %>
+
+  <%= label f, :period_no %>
+  <%= number_input f, :period_no %>
+  <%= error_tag f, :period_no %>
+
+  <%= date f, :start_date %>
+  <%= date f, :end_date %>
+
+  <%= submit "Save", phx_disable_with: "Saving..." %>
+</form>

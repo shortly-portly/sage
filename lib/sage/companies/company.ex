@@ -21,6 +21,7 @@ defmodule Sage.Companies.Company do
     field :financial_month_start, :integer
 
     belongs_to :organisation, Sage.Organisations.Organisation
+    has_many :accounting_periods, Sage.AccountingPeriods.AccountingPeriod
 
     timestamps()
   end
@@ -48,5 +49,6 @@ defmodule Sage.Companies.Company do
     company
     |> cast(attrs, @valid_attrs)
     |> validate_required([:name, :organisation_id])
+    |> cast_assoc(:accounting_periods)
   end
 end

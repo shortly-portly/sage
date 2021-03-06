@@ -1,0 +1,22 @@
+<h1>Show Accounting period</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, SageWeb.AccountingPeriodLive.FormComponent,
+    id: @accounting_period.id,
+    title: @page_title,
+    action: @live_action,
+    accounting_period: @accounting_period,
+    return_to: Routes.accounting_period_show_path(@socket, :show, @accounting_period) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Period no:</strong>
+    <%= @accounting_period.period_no %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.accounting_period_show_path(@socket, :edit, @accounting_period), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.accounting_period_index_path(@socket, :index) %></span>

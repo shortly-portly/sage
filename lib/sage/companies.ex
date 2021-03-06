@@ -7,6 +7,7 @@ defmodule Sage.Companies do
   alias Sage.Repo
 
   alias Sage.Companies.Company
+  alias Sage.AccountingPeriods.AccountingPeriod
 
   @doc """
   Returns the list of companies associated with the given organisation id.
@@ -37,7 +38,19 @@ defmodule Sage.Companies do
       ** (Ecto.NoResultsError)
 
   """
-  def get_company!(id), do: Repo.get!(Company, id)
+
+  # comments_query = from c in Comment, order_by: c.published_at
+  # Repo.all from p in Post, preload: [comments: ^comments_query]
+
+  def get_company!(id) do
+    query = from ap in AccountingPeriod, order_by: ap.period_no
+
+    Repo.one!(
+      from c in Company,
+        where: c.id == ^id,
+        preload: [accounting_periods: ^query]
+    )
+  end
 
   @doc """
   Creates a company.
@@ -102,5 +115,30 @@ defmodule Sage.Companies do
   """
   def change_company(%Company{} = company, attrs \\ %{}) do
     Company.changeset(company, attrs)
+  end
+
+  @doc """
+  Returns a company struct pre-populated with defaults for a new company.
+  """
+  def company_defaults do
+    today = Date.utc_today()
+
+    %Company{}
+    |> Map.put(:financial_month_start, today.month)
+    |> Map.put(:financial_year_start, today.year)
+    |> Map.put(:accounting_periods, default_accounting_periods(today))
+  end
+
+  defp default_accounting_periods(date) do
+    Enum.map(0..11, fn period ->
+      %AccountingPeriod{}
+      |> Map.put(:period_no, period + 1)
+      |> Map.put(:start_date, Date.beginning_of_month(Timex.shift(date, months: period)))
+      |> Map.put(:end_date, Date.end_of_month(Timex.shift(date, months: period)))
+      |> Map.put(
+        :temp_id,
+        :crypto.strong_rand_bytes(5) |> Base.url_encode64() |> binary_part(0, 5)
+      )
+    end)
   end
 end

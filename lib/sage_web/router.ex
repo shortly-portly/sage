@@ -75,6 +75,13 @@ defmodule SageWeb.Router do
 
     live "/companies/:id", CompanyLive.Show, :show
     live "/companies/:id/show/edit", CompanyLive.Show, :edit
+
+    live "/accounting_periods", AccountingPeriodLive.Index, :index
+    live "/accounting_periods/new", AccountingPeriodLive.Index, :new
+    live "/accounting_periods/:id/edit", AccountingPeriodLive.Index, :edit
+
+    live "/accounting_periods/:id", AccountingPeriodLive.Show, :show
+    live "/accounting_periods/:id/show/edit", AccountingPeriodLive.Show, :edit
   end
 
   scope "/", SageWeb do

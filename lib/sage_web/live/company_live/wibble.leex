@@ -7,50 +7,19 @@
   phx_submit: "save" %>
 
   <div class="flex mb-4">
-    <div class="w-1/2 flex flex-col border-2 mb-2 mr-2 pb-8 px-8 py-8">
-      <div class="">
+    <div class="w-1/2 flex flex-col bg-blue-500">
+      <div class="border-2 mb-2 mr-2 pb-8 px-8 py-8 ">
         <div class="font-semibold text-indigo-500 text-2xl ">Company Details</div>
 
-          <%= input f, :name %>
-          <%= input f, :address_line_1 %>
-          <%= input f, :address_line_2 %>
-          <%= input f, :county %>
-          <%= input f, :postcode %>
-          <%= input f, :country %>
-        </div>
-
-        <div class="mr-2 pb-8 py-8">
-          <div class="font-semibold text-indigo-500 text-2xl">Contact Details</div>
-          <%= input f, :telephone %>
-          <%= input f, :email %>
-          <%= input f, :website %>
-        </div>
+        <%= input f, :name %>
+        <%= input f, :address_line_1 %>
+        <%= input f, :address_line_2 %>
+        <%= input f, :county %>
+        <%= input f, :postcode %>
+        <%= input f, :country %>
       </div>
-      <div class="w-1/2 flex flex-col border-2 mb-2 mr-2 pb-8 px-8 py-8">
-        <div class="">
-          <div class="font-semibold text-indigo-500 text-2xl ">VAT Details</div>
 
-          <%= input f, :vat_registration_number %>
-          <%= input f, :vat_country_code %>
-          <%= date f, :next_vat_return_date %>
-          <%= input f, :eori_number %>
-
-          <div class="px-3 mb-4 mt-4 md:mb-0 flex-grid">
-            <%= label f, :financial_month_start, class: "label" %>
-            <%= select f, :financial_month_start, @months, class: "input" %>
-          </div>
-
-          <div class="px-3 mb-4 mt-4 md:mb-0 flex-grid">
-            <%= label f, :financial_year_start, class: "label" %>
-            <%= select f, :financial_year_start, @years, class: "input" %>
-          </div>
-        </div>
-      </div>
-  </div>
-
-  <div class="flex mb-4">
-    <div class="w-1/2 flex flex-col border-2 mb-2 mr-2 pb-8 px-8 py-8">
-     <div class="">
+      <div class="border-2 mr-2 pb-8 px-8 py-8">
         <div class="font-semibold text-indigo-500 text-2xl">Contact Details</div>
         <%= input f, :telephone %>
         <%= input f, :email %>
@@ -62,10 +31,29 @@
         <%= live_patch "Cancel", to: Routes.company_index_path(@socket, :index), class: "text-base text-indigo-500 hover:text-indigo-700 focus:outline-none pt-2 p-2" %>
       </p>
     </div>
-    <div class="w-1/2 flex flex-col border-2 mb-2 mr-2 pb-8 px-8 py-8">
-     <div x-data="{ open: false, txt: 'Open' }">
+    <div class="w-1/2 flex flex-col bg-red-500">
+      <div class="border-2 mb-2 pb-8 px-8 py-8">
+        <div class="font-semibold text-indigo-500 text-2xl ">VAT Details</div>
 
-        <div class="">
+        <%= input f, :vat_registration_number %>
+        <%= input f, :vat_country_code %>
+        <%= date f, :next_vat_return_date %>
+        <%= input f, :eori_number %>
+
+        <div class="px-3 mb-4 mt-4 md:mb-0 flex-grid">
+          <%= label f, :financial_month_start, class: "label" %>
+          <%= select f, :financial_month_start, @months, class: "input" %>
+        </div>
+
+        <div class="px-3 mb-4 mt-4 md:mb-0 flex-grid">
+          <%= label f, :financial_year_start, class: "label" %>
+          <%= select f, :financial_year_start, @years, class: "input" %>
+        </div>
+      </div>
+
+      <div x-data="{ open: false, txt: 'Open' }">
+
+        <div class="border-2 mr-2 pb-8 px-8 py-8">
           <div> <span class="font-semibold text-indigo-500 text-2xl">Accounting Periods</span>
           <button class="float-right submit" type="button" @click="open = !open; txt = open ? 'Close' : 'Open'"><span x-text="txt"></span></button>
           </div>

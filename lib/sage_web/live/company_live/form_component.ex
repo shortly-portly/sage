@@ -2,6 +2,7 @@ defmodule SageWeb.CompanyLive.FormComponent do
   use SageWeb, :live_component
 
   alias Sage.Companies
+  alias Sage.Companies.Company
 
   @months [
     Jan: 1,
@@ -22,17 +23,28 @@ defmodule SageWeb.CompanyLive.FormComponent do
   def update(%{company: company} = assigns, socket) do
     changeset = Companies.change_company(company)
 
+    today = Date.utc_today().year
+    years = (today - 5)..(today + 5)
+
     {:ok,
      socket
      |> assign(assigns)
      |> assign(:changeset, changeset)
-     |> assign(:months, @months)}
+     |> assign(:months, @months)
+     |> assign(:years, years)}
   end
 
   @impl true
   def handle_event("validate", %{"company" => company_params}, socket) do
+    company =
+      if socket.assigns.action == :new do
+        %Company{}
+      else
+        socket.assigns.company
+      end
+
     changeset =
-      socket.assigns.company
+      company
       |> Companies.change_company(company_params)
       |> Map.put(:action, :validate)
 
