@@ -23,7 +23,7 @@ defmodule Sage.Companies.Company do
     field :financial_month_start, :integer
 
     belongs_to :organisation, Sage.Organisations.Organisation
-    has_many :accounting_periods, Sage.AccountingPeriods.AccountingPeriod
+    has_many :accounting_periods, Sage.AccountingPeriods.AccountingPeriod, on_replace: :delete
 
     timestamps()
   end
@@ -67,7 +67,10 @@ defmodule Sage.Companies.Company do
       month = get_field(changeset, :financial_month_start)
       date = Timex.to_date({year, month, 01})
       accounting_periods = Companies.default_accounting_periods(date)
-      put_change(changeset, :accounting_periods, accounting_periods)
+
+      changeset
+      |> delete_change(:accounting_periods)
+      |> put_change(:accounting_periods, accounting_periods)
     else
       changeset
     end
