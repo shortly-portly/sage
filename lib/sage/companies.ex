@@ -133,8 +133,8 @@ defmodule Sage.Companies do
     Enum.map(0..11, fn period ->
       %AccountingPeriod{}
       |> Map.put(:period_no, period + 1)
-      |> Map.put(:start_date, Date.beginning_of_month(Timex.shift(date, months: period)))
-      |> Map.put(:end_date, Date.end_of_month(Timex.shift(date, months: period)))
+      |> Map.put(:start_date, Timex.beginning_of_month(Timex.shift(date, months: period)))
+      |> Map.put(:end_date, Timex.end_of_month(Timex.shift(date, months: period)))
       |> Map.put(
         :temp_id,
         :crypto.strong_rand_bytes(5) |> Base.url_encode64() |> binary_part(0, 5)
