@@ -2,6 +2,8 @@ defmodule Sage.Companies.Company do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Sage.Companies
+
   schema "companies" do
     field :name, :string
     field :address_line_1, :string
@@ -41,6 +43,7 @@ defmodule Sage.Companies.Company do
     :vat_country_code,
     :next_vat_return_date,
     :eori_number,
+    :financial_month_start,
     :financial_year_start
   ]
 
@@ -50,5 +53,23 @@ defmodule Sage.Companies.Company do
     |> cast(attrs, @valid_attrs)
     |> validate_required([:name, :organisation_id])
     |> cast_assoc(:accounting_periods)
+    |> set_accounting_periods
+  end
+
+  # If either the financial start year or month have changed then we need to recalculate
+  # the default accounting periods.
+  defp set_accounting_periods(changeset) do
+    year = get_change(changeset, :financial_year_start)
+    month = get_change(changeset, :financial_month_end)
+
+    if year || month do
+      year = get_field(changeset, :financial_year_start)
+      month = get_field(changeset, :financial_month_start)
+      date = Timex.to_date({year, month, 01})
+      accounting_periods = Companies.default_accounting_periods(date)
+      put_change(changeset, :accounting_periods, accounting_periods)
+    else
+      changeset
+    end
   end
 end

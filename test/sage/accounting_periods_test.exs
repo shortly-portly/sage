@@ -6,7 +6,7 @@ defmodule Sage.AccountingPeriodsTest do
   describe "accounting_periods" do
     alias Sage.AccountingPeriods.AccountingPeriod
 
-    @valid_attrs %{period_no: 42}
+    @valid_attrs %{period_no: 42, start_date: ~D[2021-03-06], end_date: ~D[2021-04-06]}
     @update_attrs %{period_no: 43}
     @invalid_attrs %{period_no: nil}
 
@@ -30,30 +30,44 @@ defmodule Sage.AccountingPeriodsTest do
     end
 
     test "create_accounting_period/1 with valid data creates a accounting_period" do
-      assert {:ok, %AccountingPeriod{} = accounting_period} = AccountingPeriods.create_accounting_period(@valid_attrs)
+      assert {:ok, %AccountingPeriod{} = accounting_period} =
+               AccountingPeriods.create_accounting_period(@valid_attrs)
+
       assert accounting_period.period_no == 42
     end
 
     test "create_accounting_period/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = AccountingPeriods.create_accounting_period(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} =
+               AccountingPeriods.create_accounting_period(@invalid_attrs)
     end
 
     test "update_accounting_period/2 with valid data updates the accounting_period" do
       accounting_period = accounting_period_fixture()
-      assert {:ok, %AccountingPeriod{} = accounting_period} = AccountingPeriods.update_accounting_period(accounting_period, @update_attrs)
+
+      assert {:ok, %AccountingPeriod{} = accounting_period} =
+               AccountingPeriods.update_accounting_period(accounting_period, @update_attrs)
+
       assert accounting_period.period_no == 43
     end
 
     test "update_accounting_period/2 with invalid data returns error changeset" do
       accounting_period = accounting_period_fixture()
-      assert {:error, %Ecto.Changeset{}} = AccountingPeriods.update_accounting_period(accounting_period, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               AccountingPeriods.update_accounting_period(accounting_period, @invalid_attrs)
+
       assert accounting_period == AccountingPeriods.get_accounting_period!(accounting_period.id)
     end
 
     test "delete_accounting_period/1 deletes the accounting_period" do
       accounting_period = accounting_period_fixture()
-      assert {:ok, %AccountingPeriod{}} = AccountingPeriods.delete_accounting_period(accounting_period)
-      assert_raise Ecto.NoResultsError, fn -> AccountingPeriods.get_accounting_period!(accounting_period.id) end
+
+      assert {:ok, %AccountingPeriod{}} =
+               AccountingPeriods.delete_accounting_period(accounting_period)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        AccountingPeriods.get_accounting_period!(accounting_period.id)
+      end
     end
 
     test "change_accounting_period/1 returns a accounting_period changeset" do

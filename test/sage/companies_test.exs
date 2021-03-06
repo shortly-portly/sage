@@ -18,6 +18,7 @@ defmodule Sage.CompaniesTest do
         attrs
         |> Enum.into(@valid_attrs)
         |> Enum.into(%{organisation_id: organisation.id})
+        |> Map.put(:accounting_periods, [])
         |> Companies.create_company()
 
       company

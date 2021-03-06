@@ -19,8 +19,11 @@ defmodule Sage.Companies do
 
   """
   def list_companies(organisation_id) do
-    Company
-    |> where([c], c.organisation_id == ^organisation_id)
+    from(
+      c in Company,
+      where: c.organisation_id == ^organisation_id,
+      preload: [:accounting_periods]
+    )
     |> Repo.all()
   end
 
@@ -129,16 +132,12 @@ defmodule Sage.Companies do
     |> Map.put(:accounting_periods, default_accounting_periods(today))
   end
 
-  defp default_accounting_periods(date) do
+  def default_accounting_periods(date) do
     Enum.map(0..11, fn period ->
       %AccountingPeriod{}
       |> Map.put(:period_no, period + 1)
       |> Map.put(:start_date, Timex.beginning_of_month(Timex.shift(date, months: period)))
       |> Map.put(:end_date, Timex.end_of_month(Timex.shift(date, months: period)))
-      |> Map.put(
-        :temp_id,
-        :crypto.strong_rand_bytes(5) |> Base.url_encode64() |> binary_part(0, 5)
-      )
     end)
   end
 end
