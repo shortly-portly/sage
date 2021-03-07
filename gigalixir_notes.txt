@@ -1,0 +1,8 @@
+IEX
+===
+gigalixir ps:remote_console
+
+Reset Database
+==============
+Ecto.Migrator.run(Sage.Repo, Application.app_dir(:sage, "priv/repo/migrations"), :down, [all: true])
+Ecto.Migrator.run(Sage.Repo, Application.app_dir(:sage, "priv/repo/migrations"), :up, [all: true])

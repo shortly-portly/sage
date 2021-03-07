@@ -25,7 +25,7 @@ defmodule Sage.Repo.Migrations.CreateCompanies do
       timestamps()
     end
 
-    create unique_index(:companies, [:name, :organisation_id])
+    # create unique_index(:companies, [:name, :organisation_id])
 
   end
 end
