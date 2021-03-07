@@ -54,6 +54,7 @@ defmodule Sage.Companies.Company do
     |> validate_required([:name, :organisation_id])
     |> cast_assoc(:accounting_periods)
     |> set_accounting_periods
+    |> unique_constraint([:name, :organisation_id])
   end
 
   # If either the financial start year or month have changed then we need to recalculate

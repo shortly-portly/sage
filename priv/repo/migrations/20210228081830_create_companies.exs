@@ -20,11 +20,12 @@ defmodule Sage.Repo.Migrations.CreateCompanies do
       add :financial_year_start, :integer
       add :financial_month_start, :integer
 
-
       add :organisation_id, references(:organisations)
 
       timestamps()
     end
+
+    create unique_index(:companies, [:name, :organisation_id])
 
   end
 end

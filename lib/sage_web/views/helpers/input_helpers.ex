@@ -8,7 +8,7 @@ defmodule SageWeb.InputHelpers do
     wrapper_opts = [class: "px-3 mb-4 mt-4 md:mb-0 flex-grid"]
     label_opts = [class: "label"]
     #    input_opts = [class: "input #{state_class(form, field)}"]
-    input_opts = [class: "input"]
+    input_opts = [class: "input", "phx-debounce": "blur"]
 
     content_tag :div, wrapper_opts do
       label_text =
