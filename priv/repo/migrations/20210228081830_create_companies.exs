@@ -1,7 +1,7 @@
 defmodule Sage.Repo.Migrations.CreateCompanies do
   use Ecto.Migration
 
-  def up do
+  def change do
     create table(:companies) do
       add :name, :string
       add :address_line_1, :string
@@ -25,11 +25,9 @@ defmodule Sage.Repo.Migrations.CreateCompanies do
       timestamps()
     end
 
-    # create unique_index(:companies, [:name, :organisation_id])
+    create unique_index(:companies, [:name, :organisation_id])
 
   end
 
-  def down do
-    drop table :companies
-  end
+
 end
