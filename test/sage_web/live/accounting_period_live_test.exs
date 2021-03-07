@@ -2,34 +2,24 @@ defmodule SageWeb.AccountingPeriodLiveTest do
   use SageWeb.ConnCase
 
   import Phoenix.LiveViewTest
-
-  alias Sage.AccountingPeriods
+  import Sage.AccountsFixtures
   import Sage.Fixtures
 
   @create_attrs %{period_no: 42, start_date: ~D[2021-03-03], end_date: ~D[2021-03-22]}
   @update_attrs %{period_no: 43}
   @invalid_attrs %{period_no: nil}
 
-  defp fixture(:accounting_period) do
-    {:ok, accounting_period} = AccountingPeriods.create_accounting_period(@create_attrs)
-    accounting_period
-  end
-
-  defp create_accounting_period(_) do
-    accounting_period = fixture(:accounting_period)
-    %{accounting_period: accounting_period}
-  end
-
-  defp login(%{conn: conn}) do
-    user = organisation_fixture(%{organisation: %{name: "Organisation"}})
-    conn = log_in_user(conn, user)
-  end
-
   describe "Index" do
-    setup [:create_accounting_period]
-    setup [:login]
+    setup %{conn: conn} do
+      user = organisation_fixture(%{organisation: %{name: "Organisation"}})
+      accounting_period = fixture(:accounting_period, %{organisation_id: user.organisation.id})
 
-    test "lists all accounting_periods", %{conn: conn, accounting_period: accounting_period} do
+      conn = log_in_user(conn, user)
+
+      %{conn: conn, organisation: user.organisation, accounting_period: accounting_period}
+    end
+
+    test "lists all accounting_periods", %{conn: conn, accounting_period: _accounting_period} do
       {:ok, _index_live, html} = live(conn, Routes.accounting_period_index_path(conn, :index))
 
       assert html =~ "Listing Accounting periods"
@@ -45,7 +35,7 @@ defmodule SageWeb.AccountingPeriodLiveTest do
 
       assert index_live
              |> form("#accounting_period-form", accounting_period: @invalid_attrs)
-             |> render_change() =~ "can&apos;t be blank"
+             |> render_change() =~ "be blank"
 
       {:ok, _, html} =
         index_live
@@ -74,7 +64,7 @@ defmodule SageWeb.AccountingPeriodLiveTest do
 
       assert index_live
              |> form("#accounting_period-form", accounting_period: @invalid_attrs)
-             |> render_change() =~ "can&apos;t be blank"
+             |> render_change() =~ "be blank"
 
       {:ok, _, html} =
         index_live
@@ -100,7 +90,14 @@ defmodule SageWeb.AccountingPeriodLiveTest do
   end
 
   describe "Show" do
-    setup [:create_accounting_period]
+    setup %{conn: conn} do
+      user = organisation_fixture(%{organisation: %{name: "Organisation"}})
+      accounting_period = fixture(:accounting_period, %{organisation_id: user.organisation.id})
+
+      conn = log_in_user(conn, user)
+
+      %{conn: conn, organisation: user.organisation, accounting_period: accounting_period}
+    end
 
     test "displays accounting_period", %{conn: conn, accounting_period: accounting_period} do
       {:ok, _show_live, html} =
@@ -123,7 +120,7 @@ defmodule SageWeb.AccountingPeriodLiveTest do
 
       assert show_live
              |> form("#accounting_period-form", accounting_period: @invalid_attrs)
-             |> render_change() =~ "can&apos;t be blank"
+             |> render_change() =~ "be blank"
 
       {:ok, _, html} =
         show_live
