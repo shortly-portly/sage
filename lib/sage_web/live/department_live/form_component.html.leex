@@ -1,0 +1,12 @@
+  <%= f = form_for @changeset, "#",
+    id: "department-form-#{@id}",
+    phx_target: @myself,
+    phx_change: "validate",
+    phx_submit: "save" %>
+
+<div class="grid grid-cols-3 gap-4 border-b-2 pb-2">
+  <div><%= input f, :code, label: false %></div>
+  <div><%= input f, :name, label: false %></div>
+</div>
+
+  </form>

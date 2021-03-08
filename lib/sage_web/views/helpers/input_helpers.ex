@@ -27,6 +27,7 @@ defmodule SageWeb.InputHelpers do
 
       input = apply(Phoenix.HTML.Form, type, [form, field, input_opts])
       error = SageWeb.ErrorHelpers.error_tag(form, field)
+
       [label, input, error || ""]
     end
   end

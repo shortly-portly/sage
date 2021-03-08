@@ -51,7 +51,7 @@ defmodule Sage.Companies.Company do
   def changeset(company, attrs) do
     company
     |> cast(attrs, @valid_attrs)
-    |> validate_required([:name, :organisation_id])
+    |> validate_required([:name, :organisation_id, :address_line_1])
     |> cast_assoc(:accounting_periods)
     |> set_accounting_periods
     |> unique_constraint([:name, :organisation_id])
