@@ -20,6 +20,6 @@ defmodule Sage.Departments.Department do
   def changeset(department, attrs) do
     department
     |> cast(attrs, @valid_attrs)
-    |> validate_required([:code, :name])
+    |> validate_required([:code, :name, :contact_name])
   end
 end

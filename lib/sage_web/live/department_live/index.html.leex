@@ -5,21 +5,34 @@
   <div class="p-3 uppercase font-semibold text-left">Name</div>
 </div>
 
-<%= for department <- @departments do %>
-  <div id=<%= department.temp_id %>>
-    <%= live_component @socket, SageWeb.DepartmentLive.FormComponent,
-      id: department.temp_id,
-      page_title: "Wobble",
-      action: :edit,
-      department: department,
-      current_user: @current_user,
-      return_to: Routes.department_index_path(@socket, :index) %>
-  </div>
+<%= for changeset <- @changesets do %>
+   <%= f = form_for changeset, "#",
+    id: "dep-#{changeset.data.temp_id}",
+    phx_change: "validate",
+    phx_submit: "save" %>
+
+    <div class="grid grid-cols-3 gap-4 border-b-2 pb-2">
+      <div>
+        <%= text_input f, :code, "phx_debounce": "blur", class: "input" %>
+        <%= error_tag f, :code %>
+
+      </div>
+      <div>
+        <%= text_input f, :name, "phx_debounce": "blur", class: "input" %>
+        <%= error_tag f, :name%>
+
+      </div>
+       <div>
+        <%= text_input f, :contact_name, "phx_debounce": "blur", class: "input" %>
+        <%= error_tag f, :contact_name %>
+
+      </div>
+    </div>
+    <%= hidden_input f, :temp_id %>
+    <%= hidden_input f, :id %>
+  </form>
   <% end %>
 
 <div class="my-8">
-  <%= live_patch "New Department",
-      to: Routes.department_index_path(@socket, :new),
-      class: "text-indigo-500 hover:text-indigo-700 focus:outline-none pt-2 text-2xl font-semibold border-indigo-500 border-2 p-2 rounded-md"
-  %>
+  <button type="button" phx-click="new">New department</button>
 </div>

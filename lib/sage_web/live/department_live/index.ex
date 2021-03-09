@@ -10,12 +10,13 @@ defmodule SageWeb.DepartmentLive.Index do
 
     departments = list_departments()
 
-    departments =
+    changesets =
       Enum.map(departments, fn department ->
         Map.put(department, :temp_id, get_temp_id())
       end)
+      |> Enum.map(fn department -> Departments.change_department(department) end)
 
-    {:ok, assign(socket, :departments, departments)}
+    {:ok, assign(socket, :changesets, changesets)}
   end
 
   @impl true
@@ -52,8 +53,38 @@ defmodule SageWeb.DepartmentLive.Index do
     {:noreply, assign(socket, :departments, list_departments())}
   end
 
-  def handle_event("validate", _params, socket) do
-    {:noreply, socket}
+  def handle_event("new", _params, socket) do
+    IO.puts("New called")
+
+    changeset =
+      %Department{}
+      |> Map.put(:temp_id, get_temp_id())
+      |> Departments.change_department()
+
+    changesets = socket.assigns.changesets ++ [changeset]
+
+    {:noreply, assign(socket, :changesets, changesets)}
+  end
+
+  def handle_event("validate", %{"department" => department_params}, socket) do
+    # new_changeset = Departments.change_department(%Department{}, department_params)
+
+    new_changeset =
+      %Department{}
+      |> Departments.change_department(department_params)
+      |> Map.put(:action, :validate2)
+
+    changesets =
+      Enum.map(socket.assigns.changesets, fn changeset ->
+        if Ecto.Changeset.fetch_field!(changeset, :temp_id) ==
+             Ecto.Changeset.fetch_field!(new_changeset, :temp_id) do
+          new_changeset
+        else
+          changeset
+        end
+      end)
+
+    {:noreply, assign(socket, :changesets, changesets)}
   end
 
   defp list_departments do
