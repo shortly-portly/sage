@@ -11,32 +11,24 @@ defmodule SageWeb.DepartmentLive.Index do
     departments = list_departments()
 
     changesets =
-      Enum.map(departments, fn department ->
-        Map.put(department, :temp_id, get_temp_id())
+      Enum.map(departments, fn department -> Departments.change_department(department) end)
+      |> Enum.map(fn department ->
+        department
+        |> Ecto.Changeset.put_change(:temp_id, get_temp_id())
+        |> Ecto.Changeset.put_change(:delete, false)
       end)
-      |> Enum.map(fn department -> Departments.change_department(department) end)
 
-    {:ok, assign(socket, :changesets, changesets)}
+    socket =
+      socket
+      |> assign(:changesets, changesets)
+      |> assign(:filtered, filter_changesets(changesets))
+
+    {:ok, socket}
   end
 
   @impl true
   def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
-  end
-
-  defp apply_action(socket, :edit, %{"id" => id}) do
-    socket
-    |> assign(:page_title, "Edit Department")
-    |> assign(:department, Departments.get_department!(id))
-  end
-
-  defp apply_action(socket, :new, _params) do
-    # Add a new department to the list of departments. We add it to the end of the list which
-    # is a bit inefficient for long lists but shouldn't be an issue in this case.
-    departments = socket.assigns.departments ++ [%Department{temp_id: get_temp_id()}]
-
-    socket
-    |> assign(:departments, departments)
   end
 
   defp apply_action(socket, :index, _params) do
@@ -46,33 +38,56 @@ defmodule SageWeb.DepartmentLive.Index do
   end
 
   @impl true
-  def handle_event("delete", %{"id" => id}, socket) do
-    department = Departments.get_department!(id)
-    {:ok, _} = Departments.delete_department(department)
+  def handle_event("delete", %{"temp-id" => temp_id}, socket) do
+    changesets =
+      Enum.map(socket.assigns.changesets, fn changeset ->
+        if Ecto.Changeset.fetch_field!(changeset, :temp_id) ==
+             temp_id do
+          Ecto.Changeset.put_change(changeset, :delete, true)
+        else
+          changeset
+        end
+      end)
 
-    {:noreply, assign(socket, :departments, list_departments())}
+    socket =
+      socket
+      |> assign(:changesets, changesets)
+      |> assign(:filtered, filter_changesets(changesets))
+
+    {:noreply, socket}
   end
 
+  @doc """
+  Add a new department to the list of departments. We add it to the end of the list which
+  is a bit inefficient for long lists but shouldn't be an issue in this case.
+  """
   def handle_event("new", _params, socket) do
-    IO.puts("New called")
-
     changeset =
       %Department{}
-      |> Map.put(:temp_id, get_temp_id())
       |> Departments.change_department()
+      |> Ecto.Changeset.put_change(:temp_id, get_temp_id())
+      |> Ecto.Changeset.put_change(:delete, false)
 
     changesets = socket.assigns.changesets ++ [changeset]
 
-    {:noreply, assign(socket, :changesets, changesets)}
+    socket =
+      socket
+      |> assign(:changesets, changesets)
+      |> assign(:filtered, filter_changesets(changesets))
+
+    {:noreply, socket}
   end
 
   def handle_event("validate", %{"department" => department_params}, socket) do
-    # new_changeset = Departments.change_department(%Department{}, department_params)
+    IO.inspect(department_params)
 
     new_changeset =
-      %Department{}
+      %Department{delete: false}
       |> Departments.change_department(department_params)
-      |> Map.put(:action, :validate2)
+      |> Map.put(:action, :validate)
+      |> IO.inspect()
+
+    IO.inspect(new_changeset.data)
 
     changesets =
       Enum.map(socket.assigns.changesets, fn changeset ->
@@ -84,7 +99,12 @@ defmodule SageWeb.DepartmentLive.Index do
         end
       end)
 
-    {:noreply, assign(socket, :changesets, changesets)}
+    socket =
+      socket
+      |> assign(:changesets, changesets)
+      |> assign(:filtered, filter_changesets(changesets))
+
+    {:noreply, socket}
   end
 
   defp list_departments do
@@ -92,4 +112,10 @@ defmodule SageWeb.DepartmentLive.Index do
   end
 
   defp get_temp_id, do: :crypto.strong_rand_bytes(5) |> Base.url_encode64() |> binary_part(0, 5)
+
+  defp filter_changesets(changesets) do
+    Enum.filter(changesets, fn changeset ->
+      Ecto.Changeset.fetch_field!(changeset, :delete) == false
+    end)
+  end
 end

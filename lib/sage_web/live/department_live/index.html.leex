@@ -1,38 +1,57 @@
 <%= header "Departments", "/images/department.svg" %>
 
-<div class="grid grid-cols-3 gap-4 border-b-2 border-gray-400">
+<div class="grid grid-cols-6 gap-4 border-b-2 border-gray-400">
   <div class="p-3 uppercase font-semibold text-left">Code</div>
   <div class="p-3 uppercase font-semibold text-left">Name</div>
+  <div class="p-3 uppercase font-semibold text-left">Contact Name</div>
+  <div class="p-3 uppercase font-semibold text-left">Contact Details</div>
+  <div class="p-3 uppercase font-semibold text-left">Contact Email</div>
+  <div class="p-3 uppercase font-semibold text-left">Remove</div>
 </div>
 
-<%= for changeset <- @changesets do %>
-   <%= f = form_for changeset, "#",
-    id: "dep-#{changeset.data.temp_id}",
-    phx_change: "validate",
-    phx_submit: "save" %>
+<%= for changeset <- @filtered do %>
+    <%= f = form_for changeset, "#",
+      id: "dep-#{changeset.changes.temp_id}",
+      phx_change: "validate",
+      phx_submit: "save" %>
 
-    <div class="grid grid-cols-3 gap-4 border-b-2 pb-2">
-      <div>
-        <%= text_input f, :code, "phx_debounce": "blur", class: "input" %>
-        <%= error_tag f, :code %>
+      <div class="grid grid-cols-6 gap-4 border-b-2 pb-2">
+        <div>
+          <%= text_input f, :code, "phx-debounce": "blur", class: "input" %>
+          <%= error_tag f, :code %>
+        </div>
+
+        <div>
+          <%= text_input f, :name, "phx-debounce": "blur", class: "input" %>
+          <%= error_tag f, :name%>
+        </div>
+
+        <div>
+          <%= text_input f, :contact_name, "phx-debounce": "blur", class: "input" %>
+          <%= error_tag f, :contact_name %>
+        </div>
+
+        <div>
+          <%= text_input f, :contact_details, "phx-debounce": "blur", class: "input" %>
+          <%= error_tag f, :contact_details %>
+        </div>
+
+        <div>
+          <%= text_input f, :contact_email, "phx-debounce": "blur", class: "input" %>
+          <%= error_tag f, :contact_email %>
+        </div>
+
+        <div>
+          <%= text_input f, :delete, readonly: true, class: "input", "phx-click": "delete", "phx-value-temp-id": changeset.changes.temp_id %>
+        </div>
 
       </div>
-      <div>
-        <%= text_input f, :name, "phx_debounce": "blur", class: "input" %>
-        <%= error_tag f, :name%>
-
-      </div>
-       <div>
-        <%= text_input f, :contact_name, "phx_debounce": "blur", class: "input" %>
-        <%= error_tag f, :contact_name %>
-
-      </div>
-    </div>
-    <%= hidden_input f, :temp_id %>
-    <%= hidden_input f, :id %>
-  </form>
-  <% end %>
+      <%= hidden_input f, :temp_id %>
+      <%= hidden_input f, :id %>
+      <%= hidden_input f, :delete %>
+    </form>
+    <% end %>
 
 <div class="my-8">
-  <button type="button" phx-click="new">New department</button>
+  <button type="button" phx-click="new" class="submit">New department</button>
 </div>

@@ -10,6 +10,7 @@ defmodule Sage.Departments.Department do
     field :contact_email, :string
 
     field :temp_id, :string, virtual: true
+    field :delete, :boolean, virtual: true
 
     timestamps()
   end
@@ -20,6 +21,6 @@ defmodule Sage.Departments.Department do
   def changeset(department, attrs) do
     department
     |> cast(attrs, @valid_attrs)
-    |> validate_required([:code, :name, :contact_name])
+    |> validate_required([:code, :name])
   end
 end
