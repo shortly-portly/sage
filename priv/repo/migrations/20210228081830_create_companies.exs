@@ -20,6 +20,8 @@ defmodule Sage.Repo.Migrations.CreateCompanies do
       add :financial_year_start, :integer
       add :financial_month_start, :integer
 
+      add :configured, :boolean
+
       add :organisation_id, references(:organisations)
 
       timestamps()

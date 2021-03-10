@@ -22,6 +22,8 @@ defmodule Sage.Companies.Company do
     field :financial_year_start, :integer
     field :financial_month_start, :integer
 
+    field :configured, :boolean, default: false
+
     belongs_to :organisation, Sage.Organisations.Organisation
     has_many :accounting_periods, Sage.AccountingPeriods.AccountingPeriod, on_replace: :delete
 

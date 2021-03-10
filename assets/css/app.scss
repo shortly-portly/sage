@@ -12,6 +12,9 @@
   .sub-header {
     @apply font-semibold text-indigo-500 text-2xl;
   }
+  .sub-header-2 {
+    @apply text-xl py-3;
+  }
   .label {
     @apply uppercase font-semibold mb-1 text-sm;
   }

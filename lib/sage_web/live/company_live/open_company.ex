@@ -46,12 +46,15 @@ defmodule SageWeb.CompanyLive.OpenCompany do
   end
 
   defp apply_action(socket, :open, %{"id" => id}) do
+    company = Companies.get_company!(id)
+
     if socket.connected? do
       PhoenixLiveSession.put_session(socket, "company_id", id)
+      PhoenixLiveSession.put_session(socket, "company_name", company.name)
     end
 
     socket
-    |> assign(:company, Companies.get_company!(id))
+    |> assign(:company, company)
 
     redirect(socket, to: Routes.page_path(socket, :index))
   end
