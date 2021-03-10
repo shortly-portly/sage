@@ -4,7 +4,9 @@ defmodule SageWeb.CompanyLive.Show do
   alias Sage.Companies
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(_params, session, socket) do
+    socket = assign_defaults(socket, session, true)
+
     {:ok, socket}
   end
 

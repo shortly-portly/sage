@@ -52,6 +52,8 @@ defmodule SageWeb.DepartmentLive.FormComponent do
   end
 
   defp save_department(socket, :new, department_params) do
+    department_params = Map.put(department_params, "company_id", socket.assigns.company_id)
+
     case Departments.create_department(department_params) do
       {:ok, _department} ->
         {:noreply,

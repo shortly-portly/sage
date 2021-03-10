@@ -10,6 +10,7 @@ defmodule Sage.CostCentres.CostCentre do
     field :contact_email, :string
 
     belongs_to :company, Sage.Companies.Company
+
     timestamps()
   end
 
@@ -20,6 +21,18 @@ defmodule Sage.CostCentres.CostCentre do
     cost_centre
     |> cast(attrs, @valid_attrs)
     |> validate_required([:code, :name, :company_id])
+    |> validate_length(:code, max: 3)
+    |> upcase_code()
     |> unique_constraint([:code, :company_id])
+  end
+
+  defp upcase_code(changeset) do
+    code = get_change(changeset, :code)
+
+    if code do
+      put_change(changeset, :code, String.upcase(code))
+    else
+      changeset
+    end
   end
 end

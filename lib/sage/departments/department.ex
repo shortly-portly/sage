@@ -9,18 +9,29 @@ defmodule Sage.Departments.Department do
     field :contact_details, :string
     field :contact_email, :string
 
-    field :temp_id, :string, virtual: true
-    field :delete, :boolean, virtual: true
+    belongs_to :company, Sage.Companies.Company
 
     timestamps()
   end
 
-  @valid_attrs [:code, :name, :contact_name, :contact_details, :contact_email, :temp_id]
+  @valid_attrs [:code, :name, :contact_name, :contact_details, :contact_email, :company_id]
 
   @doc false
   def changeset(department, attrs) do
     department
     |> cast(attrs, @valid_attrs)
-    |> validate_required([:code, :name])
+    |> validate_required([:code, :name, :company_id])
+    |> validate_length(:code, max: 3)
+    |> upcase_code()
+  end
+
+  defp upcase_code(changeset) do
+    code = get_change(changeset, :code)
+
+    if code do
+      put_change(changeset, :code, String.upcase(code))
+    else
+      changeset
+    end
   end
 end

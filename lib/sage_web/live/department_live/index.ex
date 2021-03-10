@@ -8,22 +8,7 @@ defmodule SageWeb.DepartmentLive.Index do
   def mount(_params, session, socket) do
     socket = assign_defaults(socket, session)
 
-    departments = list_departments()
-
-    changesets =
-      Enum.map(departments, fn department -> Departments.change_department(department) end)
-      |> Enum.map(fn department ->
-        department
-        |> Ecto.Changeset.put_change(:temp_id, get_temp_id())
-        |> Ecto.Changeset.put_change(:delete, false)
-      end)
-
-    socket =
-      socket
-      |> assign(:changesets, changesets)
-      |> assign(:filtered, filter_changesets(changesets))
-
-    {:ok, socket}
+    {:ok, assign(socket, :departments, list_departments())}
   end
 
   @impl true
@@ -31,98 +16,33 @@ defmodule SageWeb.DepartmentLive.Index do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
-  defp apply_action(socket, :index, _params) do
+  defp apply_action(socket, :edit, %{"id" => id}) do
     socket
-    |> assign(:page_title, "Listing Departments")
+    |> assign(:page_title, "Edit Department")
+    |> assign(:department, Departments.get_department!(id))
+  end
+
+  defp apply_action(socket, :new, _params) do
+    socket
+    |> assign(:page_title, "New Department")
     |> assign(:department, %Department{})
   end
 
+  defp apply_action(socket, :index, _params) do
+    socket
+    |> assign(:page_title, "Listing Departments")
+    |> assign(:department, nil)
+  end
+
   @impl true
-  def handle_event("delete", %{"temp-id" => temp_id}, socket) do
-    changesets =
-      Enum.map(socket.assigns.changesets, fn changeset ->
-        if Ecto.Changeset.fetch_field!(changeset, :temp_id) ==
-             temp_id do
-          Ecto.Changeset.put_change(changeset, :delete, true)
-        else
-          changeset
-        end
-      end)
+  def handle_event("delete", %{"id" => id}, socket) do
+    department = Departments.get_department!(id)
+    {:ok, _} = Departments.delete_department(department)
 
-    socket =
-      socket
-      |> assign(:changesets, changesets)
-      |> assign(:filtered, filter_changesets(changesets))
-
-    {:noreply, socket}
-  end
-
-  @doc """
-  Add a new department to the list of departments. We add it to the end of the list which
-  is a bit inefficient for long lists but shouldn't be an issue in this case.
-  """
-  def handle_event("new", _params, socket) do
-    changeset =
-      %Department{}
-      |> Departments.change_department()
-      |> Ecto.Changeset.put_change(:temp_id, get_temp_id())
-      |> Ecto.Changeset.put_change(:delete, false)
-
-    changesets = socket.assigns.changesets ++ [changeset]
-
-    socket =
-      socket
-      |> assign(:changesets, changesets)
-      |> assign(:filtered, filter_changesets(changesets))
-
-    {:noreply, socket}
-  end
-
-  def handle_event("save", _params, socket) do
-    # Remove any deleted departments that don't have an id as these haven't been persisted to the database
-
-    changesets =
-      Enum.reject(socket.assigns.changesets, fn cs ->
-        Ecto.Changeset.fetch_field!(cs, :id) == nil &&
-          Ecto.Changeset.fetch_field!(cs, :delete) == true
-      end)
-
-    {:noreply, socket}
-  end
-
-  def handle_event("validate", %{"department" => department_params}, socket) do
-    new_changeset =
-      %Department{delete: false}
-      |> Departments.change_department(department_params)
-      |> Map.put(:action, :validate)
-
-    changesets =
-      Enum.map(socket.assigns.changesets, fn changeset ->
-        if Ecto.Changeset.fetch_field!(changeset, :temp_id) ==
-             Ecto.Changeset.fetch_field!(new_changeset, :temp_id) do
-          new_changeset
-        else
-          changeset
-        end
-      end)
-
-    socket =
-      socket
-      |> assign(:changesets, changesets)
-      |> assign(:filtered, filter_changesets(changesets))
-
-    {:noreply, socket}
+    {:noreply, assign(socket, :departments, list_departments())}
   end
 
   defp list_departments do
     Departments.list_departments()
-  end
-
-  defp get_temp_id, do: :crypto.strong_rand_bytes(5) |> Base.url_encode64() |> binary_part(0, 5)
-
-  defp filter_changesets(changesets) do
-    Enum.filter(changesets, fn changeset ->
-      Ecto.Changeset.fetch_field!(changeset, :delete) == false
-    end)
   end
 end

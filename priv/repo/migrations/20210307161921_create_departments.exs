@@ -9,8 +9,12 @@ defmodule Sage.Repo.Migrations.CreateDepartments do
       add :contact_details, :string
       add :contact_email, :string
 
+      add :company_id, references(:companies)
+
       timestamps()
     end
+
+    create unique_index(:departments, [:code, :company_id])
 
   end
 end

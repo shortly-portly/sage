@@ -26,3 +26,10 @@
       </tbody>
     </table>
 </div>
+
+<div class="my-8">
+  <%= live_patch "New Company",
+        to: Routes.company_index_path(@socket, :new),
+            class: "text-indigo-500 hover:text-indigo-700 focus:outline-none pt-2 text-2xl font-semibold border-indigo-500 border-2 p-2 rounded-md"
+  %>
+</div>

@@ -41,7 +41,6 @@ defmodule SageWeb.CostCentreLive.FormComponent do
   end
 
   defp save_cost_centre(socket, :new, cost_centre_params) do
-    IO.inspect(socket.assigns, label: "COMPANY ID")
     cost_centre_params = Map.put(cost_centre_params, "company_id", socket.assigns.company_id)
 
     case CostCentres.create_cost_centre(cost_centre_params) do
