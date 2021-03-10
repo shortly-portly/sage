@@ -8,7 +8,7 @@ defmodule SageWeb.CompanyLive.OpenCompany do
     socket =
       socket
       |> PhoenixLiveSession.maybe_subscribe(session)
-      |> assign_defaults(session)
+      |> assign_defaults(session, true)
 
     companies = list_companies(socket.assigns)
 
@@ -21,7 +21,7 @@ defmodule SageWeb.CompanyLive.OpenCompany do
   end
 
   @impl true
-  def handle_info({:live_session_updated, session}, socket) do
+  def handle_info({:live_session_updated, _session}, socket) do
     {:noreply, socket}
   end
 

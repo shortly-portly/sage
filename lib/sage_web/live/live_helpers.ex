@@ -25,12 +25,20 @@ defmodule SageWeb.LiveHelpers do
     live_component(socket, SageWeb.ModalComponent, modal_opts)
   end
 
-  def assign_defaults(socket, %{"user_token" => user_token}) do
+  def assign_defaults(socket, session, skip_company_check \\ false) do
     socket =
-      assign_new(socket, :current_user, fn -> Accounts.get_user_by_session_token(user_token) end)
+      socket
+      |> assign_new(:current_user, fn ->
+        Accounts.get_user_by_session_token(session["user_token"])
+      end)
+      |> assign_new(:company_id, fn -> Map.get(session, "company_id", nil) end)
 
     if socket.assigns.current_user do
-      socket
+      if skip_company_check == true || socket.assigns.company_id do
+        socket
+      else
+        redirect(socket, to: Routes.company_open_company_path(socket, :index))
+      end
     else
       redirect(socket, to: Routes.user_session_path(socket, :new))
     end

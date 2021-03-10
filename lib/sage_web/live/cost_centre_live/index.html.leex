@@ -1,0 +1,52 @@
+  <%= header "Cost Centres", "/images/cost_centre.svg" %>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, SageWeb.CostCentreLive.FormComponent,
+    id: @cost_centre.id || :new,
+    title: @page_title,
+    action: @live_action,
+    cost_centre: @cost_centre,
+    company_id: @company_id,
+    return_to: Routes.cost_centre_index_path(@socket, :index) %>
+<% end %>
+
+<div class="flex justify-center">
+  <table class="w-full">
+    <thead class="border-b-2 border-gray-400">
+      <tr>
+        <th class="p-3 uppercase font-semibold text-left">Code</th>
+        <th class="p-3 uppercase font-semibold text-left">Name</th>
+        <th class="p-3 uppercase font-semibold text-left">Contact Name</th>
+        <th class="p-3 uppercase font-semibold text-left">Contact Details</th>
+        <th class="p-3 uppercase font-semibold text-left">Contact Email</th>
+
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="cost_centres">
+      <%= for cost_centre <- @cost_centres do %>
+        <tr id="cost-centre-<%= cost_centre.id %>" class="border-b-2 border-gray-300">
+          <td class="py-3 px-2"><%= cost_centre.code %></td>
+          <td class="py-3 px-2"><%= cost_centre.name %></td>
+          <td class="py-3 px-2"><%= cost_centre.contact_name %></td>
+          <td class="py-3 px-2"><%= cost_centre.contact_details %></td>
+          <td class="py-3 px-2"><%= cost_centre.contact_email %></td>
+
+
+          <td class="px-2">
+            <span class="px-2 text-indigo-500 hover:text-indigo-700"><%= live_patch "Edit", to: Routes.cost_centre_index_path(@socket, :edit, cost_centre) %></span>
+            <span class="text-gray-300">|</span>
+            <span class="px-2 text-indigo-500 hover:text-indigo-700"><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: cost_centre.id, data: [confirm: "Are you sure?"] %></span>
+           </td>
+        </tr>
+       <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="my-8">
+  <%= live_patch "New Cost Centre",
+        to: Routes.cost_centre_index_path(@socket, :new),
+        class: "text-indigo-500 hover:text-indigo-700 focus:outline-none pt-2 text-2xl font-semibold border-indigo-500 border-2 p-2 rounded-md"
+  %>
+</div>

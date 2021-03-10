@@ -78,16 +78,23 @@ defmodule SageWeb.DepartmentLive.Index do
     {:noreply, socket}
   end
 
-  def handle_event("validate", %{"department" => department_params}, socket) do
-    IO.inspect(department_params)
+  def handle_event("save", _params, socket) do
+    # Remove any deleted departments that don't have an id as these haven't been persisted to the database
 
+    changesets =
+      Enum.reject(socket.assigns.changesets, fn cs ->
+        Ecto.Changeset.fetch_field!(cs, :id) == nil &&
+          Ecto.Changeset.fetch_field!(cs, :delete) == true
+      end)
+
+    {:noreply, socket}
+  end
+
+  def handle_event("validate", %{"department" => department_params}, socket) do
     new_changeset =
       %Department{delete: false}
       |> Departments.change_department(department_params)
       |> Map.put(:action, :validate)
-      |> IO.inspect()
-
-    IO.inspect(new_changeset.data)
 
     changesets =
       Enum.map(socket.assigns.changesets, fn changeset ->

@@ -89,6 +89,13 @@ defmodule SageWeb.Router do
 
     live "/departments/:id", DepartmentLive.Show, :show
     live "/departments/:id/show/edit", DepartmentLive.Show, :edit
+
+    live "/cost_centres", CostCentreLive.Index, :index
+    live "/cost_centres/new", CostCentreLive.Index, :new
+    live "/cost_centres/:id/edit", CostCentreLive.Index, :edit
+
+    live "/cost_centres/:id", CostCentreLive.Show, :show
+    live "/cost_centres/:id/show/edit", CostCentreLive.Show, :edit
   end
 
   scope "/", SageWeb do

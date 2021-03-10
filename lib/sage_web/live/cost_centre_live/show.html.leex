@@ -1,0 +1,22 @@
+<h1>Show Cost centre</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, SageWeb.CostCentreLive.FormComponent,
+    id: @cost_centre.id,
+    title: @page_title,
+    action: @live_action,
+    cost_centre: @cost_centre,
+    return_to: Routes.cost_centre_show_path(@socket, :show, @cost_centre) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Code:</strong>
+    <%= @cost_centre.code %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.cost_centre_show_path(@socket, :edit, @cost_centre), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.cost_centre_index_path(@socket, :index) %></span>
